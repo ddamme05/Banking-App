@@ -20,4 +20,22 @@ public class Account {
     public double getBalance() {
         return balance;
     }
+
+    public void deposit(double amount) {
+        balance += amount;
+        transactions.add(new Transaction(amount, Transaction.Type.DEPOSIT));
+    }
+
+    public boolean withdraw(double amount) {
+        if (balance >= amount) {
+            balance -= amount;
+            transactions.add(new Transaction(amount, Transaction.Type.WITHDRAW));
+            return true;
+        }
+        return false;
+    }
+
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
 }
