@@ -32,6 +32,7 @@ public class Bank {
     public double withdraw(String accountId, double amount) {
         Account account = db.getAccount(accountId);
         if (account != null && account.withdraw(amount)) {
+            account.recordOutgoing(amount); // Add this line
             return account.getBalance();
         }
         return -1;
@@ -43,9 +44,20 @@ public class Bank {
 
         if (fromAccount != null && toAccount != null && fromAccount.withdraw(amount)) {
             toAccount.deposit(amount);
+            fromAccount.recordOutgoing(amount);
             return fromAccount.getBalance();
         }
         return -1;
+    }
+    public List<Account> getTopSpenders(int n) {
+        List<Account> sortedAccounts = new ArrayList<>(db.getAllAccountObjects());
+        sortedAccounts.sort((a, b) -> {
+            if (a.getTotalOutgoing() == b.getTotalOutgoing()) {
+                return a.getAccountId().compareTo(b.getAccountId());
+            }
+            return Double.compare(b.getTotalOutgoing(), a.getTotalOutgoing());
+        });
+        return sortedAccounts.subList(0, Math.min(n, sortedAccounts.size()));
     }
 
     public double getBalance(String accountId) {

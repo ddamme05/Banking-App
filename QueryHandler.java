@@ -42,6 +42,17 @@ public class QueryHandler {
                     double transferResult = bank.transfer(query[2], query[3], Double.parseDouble(query[4]));
                     results.add(transferResult == -1 ? "Error transferring!" : String.valueOf(transferResult));
                     break;
+                case "TOP_SPENDERS":
+                    int n = Integer.parseInt(query[2]);
+                    List<Account> topAccounts = bank.getTopSpenders(n);
+                    StringBuilder sb = new StringBuilder();
+                    for (Account acc : topAccounts) {
+                        if (sb.length() > 0) { sb.append(", "); }
+                        sb.append(acc.getAccountId()).append("(").append(acc.getTotalOutgoing()).append(")");
+                    }
+                    results.add(sb.toString());
+                    break;
+
                 default:
                     results.add("Unsupported query!");
                     break;

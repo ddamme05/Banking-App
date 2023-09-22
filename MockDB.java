@@ -1,3 +1,4 @@
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,6 +25,10 @@ public class MockDB {
 
     public boolean accountExists(String accountId) {
         return accounts.containsKey(accountId);
+    }
+
+    public Collection<Account> getAllAccountObjects() {
+        return accounts.values();
     }
 
     public Map<String, Double> getAllAccounts() {
