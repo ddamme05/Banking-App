@@ -49,11 +49,6 @@ public class Account {
         return totalOutgoing;
     }
 
-    public void receiveCashback(double amount) {
-        this.balance += amount;
-        this.cashback += amount;
-    }
-
     public double getCashback() {
         return cashback;
     }
@@ -61,5 +56,11 @@ public class Account {
     public void mergeTransactions(List<Transaction> otherTransactions) {
         this.transactions.addAll(otherTransactions);
     }
+    public void receiveCashback(double amount) {
+        balance += amount;
+        cashback += amount;
+        transactions.add(new Transaction(amount, Transaction.Type.CASHBACK));
+    }
+
 
 }

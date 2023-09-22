@@ -45,14 +45,12 @@ public class Bank {
         if (fromAccount != null && toAccount != null && fromAccount.withdraw(amount)) {
             toAccount.deposit(amount);
             fromAccount.recordOutgoing(amount);
-
-            double cashbackAmount = amount * 0.005; // 0.5% cashback on transfer
-            fromAccount.receiveCashback(cashbackAmount);
-
             return fromAccount.getBalance();
         }
         return -1;
     }
+
+
     public List<Account> getTopSpenders(int n) {
         //Creating list with all accounts in db
         List<Account> sortedAccounts = new ArrayList<>(db.getAllAccountObjects());
@@ -66,6 +64,16 @@ public class Bank {
         });
         //We get the n accounts ranked
         return sortedAccounts.subList(0, Math.min(n, sortedAccounts.size()));
+    }
+
+    public double addCashback(String accountId, double amount) {
+        Account account = db.getAccount(accountId);
+        if (account != null) {
+            double cashbackAmount = amount * 0.005; // 0.5% cashback
+            account.receiveCashback(cashbackAmount);
+            return account.getBalance();
+        }
+        return -1;
     }
 
     public boolean mergeAccounts(String sourceAccountId, String targetAccountId) {

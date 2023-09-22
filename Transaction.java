@@ -1,6 +1,6 @@
 public class Transaction {
     //Using enum for readability and security
-    public enum Type {DEPOSIT, WITHDRAW}
+    public enum Type {DEPOSIT, WITHDRAW, CASHBACK}
     private double amount;
     private Type type;
 

@@ -12,16 +12,8 @@ public class QueryHandler {
     public List<String> handleQueries(List<String[]> queries) {
         List<String> results = new ArrayList<>();
 
-        /*
-        query[0] = operation
-        query[2] = which account we are withdrawing from / depositing to / account to create
-        query[3] = amt to be withdrawn / deposited OR target account for transfer
-        query[4] = amt to be transferred (only for TRANSFER)
-        Queries return the current balance of an account or a boolean.
-        */
-
         for (String[] query : queries) {
-            switch (query[0]) { // Represents operation in the query
+            switch (query[0]) {
                 case "CREATE_ACCOUNT":
                     results.add(String.valueOf(bank.createAccount(query[2])));
                     break;
@@ -48,13 +40,18 @@ public class QueryHandler {
                     results.add(sb.toString());
                     break;
                 case "CASHBACK":
-                    Account account = bank.getAccount(query[1]); // Assuming query[1] is the account ID
-                    if (account != null) {
-                        results.add("Cashback for account " + query[1] + ": " + account.getCashback());
+                    String accountId = query[1];
+                    Account acc = bank.getAccount(accountId);
+                    if (acc != null) {
+                        double totalOutgoing = acc.getTotalOutgoing();
+                        double cashbackAmount = totalOutgoing * 0.005; // 0.5% cashback
+                        bank.addCashback(accountId, cashbackAmount);
+                        results.add(String.valueOf(cashbackAmount));
                     } else {
                         results.add("Account not found!");
                     }
                     break;
+
                 case "MERGE_ACCOUNTS":
                     boolean mergeSuccess = bank.mergeAccounts(query[1], query[2]);
                     results.add(mergeSuccess ? "Merge Successful!" : "Error merging!");
