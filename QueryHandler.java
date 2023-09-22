@@ -46,6 +46,7 @@ public class QueryHandler {
                         double totalOutgoing = acc.getTotalOutgoing();
                         double cashbackAmount = totalOutgoing * 0.005; // 0.5% cashback
                         bank.addCashback(accountId, cashbackAmount);
+                        acc.deposit(cashbackAmount);  // Add the cashback to the account's balance
                         results.add(String.valueOf(cashbackAmount));
                     } else {
                         results.add("Account not found!");
