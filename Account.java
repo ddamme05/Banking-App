@@ -7,6 +7,7 @@ public class Account {
     //Initialized as a list for polymorphism, I may make it LinkedList in the future
     private List<Transaction> transactions;
     private double totalOutgoing;
+    private double cashback;
 
     public Account(String accountId) {
         this.accountId = accountId;
@@ -47,4 +48,14 @@ public class Account {
     public double getTotalOutgoing() {
         return totalOutgoing;
     }
+
+    public void receiveCashback(double amount) {
+        this.balance += amount;
+        this.cashback += amount;
+    }
+
+    public double getCashback() {
+        return cashback;
+    }
+
 }

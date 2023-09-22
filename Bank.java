@@ -45,6 +45,10 @@ public class Bank {
         if (fromAccount != null && toAccount != null && fromAccount.withdraw(amount)) {
             toAccount.deposit(amount);
             fromAccount.recordOutgoing(amount);
+
+            double cashbackAmount = amount * 0.005; // 0.5% cashback on transfer
+            fromAccount.receiveCashback(cashbackAmount);
+
             return fromAccount.getBalance();
         }
         return -1;
