@@ -9,11 +9,6 @@ public class QueryHandler {
         this.bank = bank;
     }
 
-    public Bank getBank() {
-        return bank;
-    }
-
-
     public List<String> handleQueries(List<String[]> queries) {
         List<String> results = new ArrayList<>();
 

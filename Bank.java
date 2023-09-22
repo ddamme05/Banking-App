@@ -50,13 +50,17 @@ public class Bank {
         return -1;
     }
     public List<Account> getTopSpenders(int n) {
+        //Creating list with all accounts in db
         List<Account> sortedAccounts = new ArrayList<>(db.getAllAccountObjects());
+        //Sorting accounts is total outgoing amt. unless they have same outgoing then we sort alphabetically
         sortedAccounts.sort((a, b) -> {
             if (a.getTotalOutgoing() == b.getTotalOutgoing()) {
                 return a.getAccountId().compareTo(b.getAccountId());
             }
+            //sorting by outgoing amt. desc
             return Double.compare(b.getTotalOutgoing(), a.getTotalOutgoing());
         });
+        //We get the n accounts ranked
         return sortedAccounts.subList(0, Math.min(n, sortedAccounts.size()));
     }
 
