@@ -47,7 +47,18 @@ public class QueryHandler {
                     }
                     results.add(sb.toString());
                     break;
-
+                case "CASHBACK":
+                    Account account = bank.getAccount(query[1]); // Assuming query[1] is the account ID
+                    if (account != null) {
+                        results.add("Cashback for account " + query[1] + ": " + account.getCashback());
+                    } else {
+                        results.add("Account not found!");
+                    }
+                    break;
+                case "MERGE_ACCOUNTS":
+                    boolean mergeSuccess = bank.mergeAccounts(query[1], query[2]);
+                    results.add(mergeSuccess ? "Merge Successful!" : "Error merging!");
+                    break;
                 default:
                     results.add("Unsupported query!");
                     break;

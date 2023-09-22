@@ -22,6 +22,7 @@ public class Main {
         capitalOneQueries.add(new String[]{"TOP_SPENDERS", "2"});
         capitalOneQueries.add(new String[]{"TRANSFER", "11", "account1", "account2", "500"});
         capitalOneQueries.add(new String[]{"CASHBACK", "account1"});
+        capitalOneQueries.add(new String[]{"MERGE_ACCOUNTS", "account1", "account2"});
 
 
         List<String> capitalOneResults = capitalOneHandler.handleQueries(capitalOneQueries);

@@ -68,6 +68,26 @@ public class Bank {
         return sortedAccounts.subList(0, Math.min(n, sortedAccounts.size()));
     }
 
+    public boolean mergeAccounts(String sourceAccountId, String targetAccountId) {
+        Account sourceAccount = db.getAccount(sourceAccountId);
+        Account targetAccount = db.getAccount(targetAccountId);
+
+        if (sourceAccount == null || targetAccount == null) {
+            return false; // One or both accounts do not exist
+        }
+
+        double sourceBalance = sourceAccount.getBalance();
+        targetAccount.deposit(sourceBalance);
+        sourceAccount.withdraw(sourceBalance);
+
+        //Combine transaction history of both accounts
+        targetAccount.mergeTransactions(sourceAccount.getTransactions());
+
+        db.removeAccount(sourceAccountId);
+        return true;
+    }
+
+
     public double getBalance(String accountId) {
         Account account = db.getAccount(accountId);
         if (account != null) {
