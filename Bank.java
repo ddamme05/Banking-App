@@ -29,7 +29,6 @@ public class Bank {
         return -1;
     }
 
-    // Withdraw money from an account.
     public double withdraw(String accountId, double amount) {
         Account account = db.getAccount(accountId);
         if (account != null && account.withdraw(amount)) {
@@ -54,6 +53,10 @@ public class Bank {
         if (account != null) {
             return account.getBalance();
         }
-        return -1;  // -1 indicates an error scenario.
+        return -1;
+    }
+
+    public Map<String, Double> getAllAccounts() {
+        return db.getAllAccounts();
     }
 }

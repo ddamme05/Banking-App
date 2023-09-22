@@ -1,10 +1,12 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Main {
 
     public static void main(String[] args) {
-        QueryHandler handler = new QueryHandler();
+        Bank bank = new Bank();
+        QueryHandler handler = new QueryHandler(bank);
 
         List<String[]> queries = new ArrayList<>();
         queries.add(new String[]{"CREATE_ACCOUNT", "1", "account3"});
@@ -17,12 +19,18 @@ public class Main {
         queries.add(new String[]{"TRANSFER", "9", "account3", "account1", "1000"});
         queries.add(new String[]{"TRANSFER", "10", "account1", "account2", "2500"});
 
-        // Process the queries and get the results.
+
         List<String> results = handler.handleQueries(queries);
 
-        // Print the results to the console with a for in.
         for (String result : results) {
             System.out.println(result);
+        }
+
+        System.out.println("\nStatus of all accounts:");
+
+        Map<String, Double> accountStatus = bank.getAllAccounts();
+        for (Map.Entry<String, Double> entry : accountStatus.entrySet()) {
+            System.out.println("Account ID: " + entry.getKey() + ", Balance: " + entry.getValue());
         }
     }
 }

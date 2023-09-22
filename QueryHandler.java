@@ -1,12 +1,18 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class QueryHandler {
     private Bank bank;
 
-    public QueryHandler() {
-        this.bank = new Bank();
+    public QueryHandler(Bank bank) {
+        this.bank = bank;
     }
+
+    public Bank getBank() {
+        return bank;
+    }
+
 
     public List<String> handleQueries(List<String[]> queries) {
         List<String> results = new ArrayList<>();

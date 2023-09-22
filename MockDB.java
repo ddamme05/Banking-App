@@ -25,4 +25,12 @@ public class MockDB {
     public boolean accountExists(String accountId) {
         return accounts.containsKey(accountId);
     }
+
+    public Map<String, Double> getAllAccounts() {
+        Map<String, Double> accountBalances = new HashMap<>();
+        for (Map.Entry<String, Account> entry : accounts.entrySet()) {
+            accountBalances.put(entry.getKey(), entry.getValue().getBalance());
+        }
+        return accountBalances;
+    }
 }
