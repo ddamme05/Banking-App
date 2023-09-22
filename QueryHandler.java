@@ -10,14 +10,17 @@ public class QueryHandler {
 
     public List<String> handleQueries(List<String[]> queries) {
         List<String> results = new ArrayList<>();
+
         /*
         query[0] = operation
-        query[2] = which account we are withdrawing from
-        query[3] = amt to be withdrawn
+        query[2] = which account we are withdrawing from / depositing to / account to create
+        query[3] = amt to be withdrawn / deposited OR target account for transfer
+        query[4] = amt to be transferred (only for TRANSFER)
+        Queries return the current balance of an account or a boolean.
         */
 
         for (String[] query : queries) {
-            switch (query[0]) { //Represents operation in the query
+            switch (query[0]) { // Represents operation in the query
                 case "CREATE_ACCOUNT":
                     results.add(String.valueOf(bank.createAccount(query[2])));
                     break;
@@ -30,8 +33,8 @@ public class QueryHandler {
                     results.add(withdrawResult == -1 ? "Error withdrawing!" : String.valueOf(withdrawResult));
                     break;
                 case "TRANSFER":
-                    boolean transferSuccess = bank.transfer(query[2], query[3], Double.parseDouble(query[4]));
-                    results.add(String.valueOf(transferSuccess));
+                    double transferResult = bank.transfer(query[2], query[3], Double.parseDouble(query[4]));
+                    results.add(transferResult == -1 ? "Error transferring!" : String.valueOf(transferResult));
                     break;
                 default:
                     results.add("Unsupported query!");

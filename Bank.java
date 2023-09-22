@@ -1,64 +1,59 @@
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Bank {
-    private Map<String, Account> accounts;
-
-    public Bank() {
-        this.accounts = new HashMap<>();
-    }
+    private MockDB db = new MockDB();
 
     public boolean createAccount(String accountId) {
-        if (accounts.containsKey(accountId)) {
-            System.out.println("Duplicate account!");
-            return false;  // Account already exists.
+        if (!db.accountExists(accountId)) {
+            Account account = new Account(accountId);
+            db.addAccount(account);
+            return true;
         }
-        accounts.put(accountId, new Account(accountId));
-        return true;
-    }
-
-    public double deposit(String accountId, double amount) {
-        Account account = accounts.get(accountId);
-        if (account == null) {
-            System.out.println("Account not found!");
-            return -1;  // Account not found.
-        }
-        account.deposit(amount);
-        return account.getBalance();
-    }
-
-    public double withdraw(String accountId, double amount) {
-        Account account = accounts.get(accountId);
-        if (account == null) {
-            System.out.println("Account not found!");
-            return -1;  // Account not found.
-        }
-        if (!account.withdraw(amount)) {
-            System.out.println("Insufficient funds!");
-            return -1;  // Insufficient funds.
-        }
-        return account.getBalance();
-    }
-
-    public boolean transfer(String fromAccountId, String toAccountId, double amount) {
-        Account fromAccount = accounts.get(fromAccountId);
-        Account toAccount = accounts.get(toAccountId);
-
-        if (fromAccount == null || toAccount == null) {
-            System.out.println("Transfer involves non-existing account!");
-            return false;  // AT least one of the accounts doesn't exist.
-        }
-
-        if (!fromAccount.withdraw(amount)) {
-            System.out.println("Insufficient balance being transferred!");
-            return false;  // Insufficient funds in the 'from' account.
-        }
-
-        toAccount.deposit(amount);
-        return true;
+        return false;
     }
 
     public Account getAccount(String accountId) {
-        return accounts.get(accountId);
+        return db.getAccount(accountId);
+    }
+
+    public boolean deleteAccount(String accountId) {
+        return db.removeAccount(accountId);
+    }
+
+    public double deposit(String accountId, double amount) {
+        Account account = db.getAccount(accountId);
+        if (account != null) {
+            account.deposit(amount);
+            return account.getBalance();
+        }
+        return -1;
+    }
+
+    // Withdraw money from an account.
+    public double withdraw(String accountId, double amount) {
+        Account account = db.getAccount(accountId);
+        if (account != null && account.withdraw(amount)) {
+            return account.getBalance();
+        }
+        return -1;
+    }
+
+    public double transfer(String fromAccountId, String toAccountId, double amount) {
+        Account fromAccount = db.getAccount(fromAccountId);
+        Account toAccount = db.getAccount(toAccountId);
+
+        if (fromAccount != null && toAccount != null && fromAccount.withdraw(amount)) {
+            toAccount.deposit(amount);
+            return fromAccount.getBalance();
+        }
+        return -1;
+    }
+
+    public double getBalance(String accountId) {
+        Account account = db.getAccount(accountId);
+        if (account != null) {
+            return account.getBalance();
+        }
+        return -1;  // -1 indicates an error scenario.
     }
 }
