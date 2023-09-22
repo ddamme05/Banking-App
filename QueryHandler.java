@@ -43,7 +43,7 @@ public class QueryHandler {
                     results.add(transferResult == -1 ? "Error transferring!" : String.valueOf(transferResult));
                     break;
                 case "TOP_SPENDERS":
-                    int n = Integer.parseInt(query[2]);
+                    int n = Integer.parseInt(query[1]);
                     List<Account> topAccounts = bank.getTopSpenders(n);
                     StringBuilder sb = new StringBuilder();
                     for (Account acc : topAccounts) {

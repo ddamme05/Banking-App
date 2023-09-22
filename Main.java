@@ -15,11 +15,11 @@ public class Main {
         capitalOneQueries.add(new String[]{"DEPOSIT", "4", "account1", "2000"});
         capitalOneQueries.add(new String[]{"DEPOSIT", "5", "account2", "3000"});
         capitalOneQueries.add(new String[]{"DEPOSIT", "6", "account3", "4000"});
-        capitalOneQueries.add(new String[]{"TOP_SPENDERS", "7", "4"});
+        capitalOneQueries.add(new String[]{"TOP_SPENDERS", "4"});
         capitalOneQueries.add(new String[]{"TRANSFER", "8", "account3", "account2", "500"});
         capitalOneQueries.add(new String[]{"TRANSFER", "9", "account3", "account1", "1000"});
         capitalOneQueries.add(new String[]{"TRANSFER", "10", "account1", "account2", "2500"});
-        capitalOneQueries.add(new String[]{"TOP_SPENDERS", "11", "3"});
+        capitalOneQueries.add(new String[]{"TOP_SPENDERS", "2"});
 
 
         List<String> capitalOneResults = capitalOneHandler.handleQueries(capitalOneQueries);
