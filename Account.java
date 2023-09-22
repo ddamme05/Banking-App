@@ -58,4 +58,8 @@ public class Account {
         return cashback;
     }
 
+    public void mergeTransactions(List<Transaction> otherTransactions) {
+        this.transactions.addAll(otherTransactions);
+    }
+
 }
