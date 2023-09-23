@@ -61,7 +61,7 @@ public class QueryHandler {
                     results.add(sb.toString());
                     break;
                 case "SHOP_CASHBACK":
-                    if (query.length < 3) {
+                    if (query.length < 4) {
                         results.add("Invalid CASHBACK query");
                         break;
                     }
