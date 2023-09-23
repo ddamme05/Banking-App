@@ -1,14 +1,12 @@
 package banking.app.java;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
 
-    private static final InputStream input = System.in;
-    private static final Scanner scanner = new Scanner(input);
+    private static final Scanner scanner = new Scanner(System.in);
     private static final Bank bank = new Bank();
     private static final QueryHandler queryHandler = new QueryHandler(bank);
     private static int queryId = 1;
