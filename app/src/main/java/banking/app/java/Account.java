@@ -69,10 +69,11 @@ public class Account {
         double cashbackAmount = 0.0;
         if (amount <= balance) {
             balance -= amount;
-            cashbackAmount = amount * 0.005; // 0.5% cashback
-            balance += cashbackAmount; // add the cashback to the balance
-            transactions.add(new Transaction(amount, Transaction.Type.CASHBACK)); // record the cashback transaction
+            cashbackAmount = amount * 0.005;
+            balance += cashbackAmount;
+            transactions.add(new Transaction(amount, Transaction.Type.CASHBACK));
+            recordOutgoing(amount);
         }
-        return cashbackAmount; // return the cashback amount (or -1 or some other indicator if the operation failed)
+        return cashbackAmount;
     }
 }

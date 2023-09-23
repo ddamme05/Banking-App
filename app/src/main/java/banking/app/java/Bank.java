@@ -60,9 +60,6 @@ public class Bank {
         return -1;
     }
 
-
-
-
     public List<Account> getTopSpenders(int n) {
         List<Account> sortedAccounts = new ArrayList<>(db.getAllAccountObjects());
         sortedAccounts.sort((a, b) -> {
