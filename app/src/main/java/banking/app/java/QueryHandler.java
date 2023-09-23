@@ -1,6 +1,11 @@
+package banking.app.java;
+
+
+import banking.app.java.Account;
+import banking.app.java.Bank;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class QueryHandler {
     private Bank bank;
@@ -49,7 +54,7 @@ public class QueryHandler {
                         acc.deposit(cashbackAmount);  // Add the cashback to the account's balance
                         results.add(String.valueOf(cashbackAmount));
                     } else {
-                        results.add("Account not found!");
+                        results.add("app.src.main.java.banking.app.java.Account not found!");
                     }
                     break;
 

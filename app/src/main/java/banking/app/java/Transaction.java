@@ -1,3 +1,5 @@
+package banking.app.java;
+
 public class Transaction {
     //Using enum for readability and security
     public enum Type {DEPOSIT, WITHDRAW, CASHBACK}
