@@ -3,13 +3,41 @@ package banking.app.java;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Responsible for handling and processing queries related to banking operations.
+ * This class provides a mechanism to process a list of string-based queries and
+ * return the results of each query using the provided Bank instance.
+ */
 public class QueryHandler {
     private Bank bank;
 
+    /**
+     * Constructs a new QueryHandler with the specified Bank instance.
+     *
+     * @param bank the Bank instance to be used for processing queries
+     */
     public QueryHandler(Bank bank) {
         this.bank = bank;
     }
 
+    /**
+     * Handles and processes a list of banking-related queries.
+     *
+     * Supported query operations are:
+     * - CREATE_ACCOUNT
+     * - DEPOSIT
+     * - WITHDRAW
+     * - TRANSFER
+     * - TOP_SPENDERS
+     * - SHOP_CASHBACK
+     * - MERGE_ACCOUNTS
+     *
+     * Each query is an array of strings where the first element is the operation
+     * and the subsequent elements are the parameters for the operation.
+     *
+     * @param queries a list of string arrays representing banking queries
+     * @return a list of string results corresponding to each processed query
+     */
     public List<String> handleQueries(List<String[]> queries) {
         List<String> results = new ArrayList<>();
 
