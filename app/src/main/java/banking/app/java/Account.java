@@ -65,5 +65,14 @@ public class Account {
         transactions.add(new Transaction(amount, Transaction.Type.CASHBACK));
     }
 
-
+    public double shopWithCashback(double amount) {
+        double cashbackAmount = 0.0;
+        if (amount <= balance) {
+            balance -= amount;
+            cashbackAmount = amount * 0.005; // 0.5% cashback
+            balance += cashbackAmount; // add the cashback to the balance
+            transactions.add(new Transaction(amount, Transaction.Type.CASHBACK)); // record the cashback transaction
+        }
+        return cashbackAmount; // return the cashback amount (or -1 or some other indicator if the operation failed)
+    }
 }

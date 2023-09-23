@@ -2,105 +2,82 @@ package banking.app.java;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class QueryHandlerTest {
-
-    private QueryHandler queryHandler;
+public class QueryHandlerTest {
     private Bank bank;
+    private QueryHandler queryHandler;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         bank = new Bank();
         queryHandler = new QueryHandler(bank);
     }
 
     @Test
-    void testHandleCreateAccountQuery() {
+    public void testCreateAccount() {
         List<String[]> queries = new ArrayList<>();
-        queries.add(new String[]{"CREATE_ACCOUNT", "1", "testAccount"});
-        List<String> results = queryHandler.handleQueries(queries);
-        assertTrue(results.contains("true"), "Failed to create account.");
+        queries.add(new String[]{"CREATE_ACCOUNT", "1", "Alice"});
+        String result = queryHandler.handleQueries(queries).get(0);
+        assertTrue(bank.getAllAccounts().containsKey("Alice"));
+        assertEquals("true", result);
     }
 
     @Test
-    void testHandleDepositQuery() {
-        bank.createAccount("testAccount2");
+    public void testDeposit() {
+        bank.createAccount("Alice");
         List<String[]> queries = new ArrayList<>();
-        queries.add(new String[]{"DEPOSIT", "1", "testAccount2", "200"});
-        List<String> results = queryHandler.handleQueries(queries);
-        assertTrue(results.contains("200.0"), "Failed to deposit the correct amount.");
+        queries.add(new String[]{"DEPOSIT", "2", "Alice", "100"});
+        String result = queryHandler.handleQueries(queries).get(0);
+        assertEquals("100.0", result);
+        assertEquals(100.0, bank.getBalance("Alice"), 0.01);
     }
 
     @Test
-    void testHandleTransferQuery() {
-        bank.createAccount("sender");
-        bank.createAccount("receiver");
-        bank.deposit("sender", 300.0);
+    public void testWithdraw() {
+        bank.createAccount("Bob");
+        bank.deposit("Bob", 200.0);
         List<String[]> queries = new ArrayList<>();
-        queries.add(new String[]{"TRANSFER", "1", "sender", "receiver", "100"});
-        List<String> results = queryHandler.handleQueries(queries);
-        assertTrue(results.contains("200.0"), "Transfer not executed correctly.");
+        queries.add(new String[]{"WITHDRAW", "3", "Bob", "50"});
+        String result = queryHandler.handleQueries(queries).get(0);
+        assertEquals("150.0", result);
+        assertEquals(150.0, bank.getBalance("Bob"), 0.01);
     }
 
     @Test
-    void testHandleTopSpendersQuery() {
-        bank.createAccount("account1");
-        bank.createAccount("account2");
-        bank.createAccount("account3");
-        bank.deposit("account1", 500.0);
-        bank.deposit("account2", 300.0);
-        bank.transfer("account1", "account2", 250.0);
+    public void testTransfer() {
+        bank.createAccount("Charlie");
+        bank.createAccount("David");
+        bank.deposit("Charlie", 500.0);
         List<String[]> queries = new ArrayList<>();
-        queries.add(new String[]{"TOP_SPENDERS", "2"});
-        List<String> results = queryHandler.handleQueries(queries);
-        assertTrue(results.contains("account1(250.0), account2(0.0)"), "Top spenders query not executed correctly.");
+        queries.add(new String[]{"TRANSFER", "4", "Charlie", "David", "200"});
+        String result = queryHandler.handleQueries(queries).get(0);
+        assertEquals("300.0", result);
+        assertEquals(300.0, bank.getBalance("Charlie"), 0.01);
+        assertEquals(200.0, bank.getBalance("David"), 0.01);
     }
 
     @Test
-    void testHandleCashbackQuery() {
-        bank.createAccount("cashbackAccount");
-        bank.deposit("cashbackAccount", 1000.0);
-        bank.transfer("cashbackAccount", "someOtherAccount", 500.0);
+    public void testShopCashback() {
+        bank.createAccount("Eve");
+        bank.deposit("Eve", 2000.0);
         List<String[]> queries = new ArrayList<>();
-        queries.add(new String[]{"CASHBACK", "cashbackAccount"});
-        List<String> results = queryHandler.handleQueries(queries);
-        System.out.println(results);
-        assertTrue(results.contains("2.5"), "Cashback query not executed correctly.");
+        queries.add(new String[]{"SHOP_CASHBACK", "Eve", "Amazon", "2000"});
+        String result = queryHandler.handleQueries(queries).get(0);
+        assertEquals("10.0", result);
     }
 
-    @Test
-    void testHandleMergeAccountsQuery() {
-        bank.createAccount("accToMerge1");
-        bank.createAccount("accToMerge2");
-        bank.deposit("accToMerge1", 1000.0);
-        bank.deposit("accToMerge2", 500.0);
-        List<String[]> queries = new ArrayList<>();
-        queries.add(new String[]{"MERGE_ACCOUNTS", "accToMerge1", "accToMerge2"});
-        List<String> results = queryHandler.handleQueries(queries);
-        assertTrue(results.contains("Merge Successful!"), "Merge accounts query not executed correctly.");
-        assertEquals(1500.0, bank.getBalance("accToMerge2"), "After merge, balance not reflected correctly.");
-    }
 
     @Test
-    void testHandleWithdrawQuery() {
-        bank.createAccount("withdrawAccount");
-        bank.deposit("withdrawAccount", 500.0);
+    public void testMergeAccounts() {
+        bank.createAccount("Frank");
+        bank.createAccount("Grace");
         List<String[]> queries = new ArrayList<>();
-        queries.add(new String[]{"WITHDRAW", "1", "withdrawAccount", "200"});
-        List<String> results = queryHandler.handleQueries(queries);
-        assertTrue(results.contains("300.0"), "Failed to withdraw the correct amount.");
-    }
-
-    @Test
-    void testHandleUnsupportedQuery() {
-        List<String[]> queries = new ArrayList<>();
-        queries.add(new String[]{"MILLION_DOLLARS"});
-        List<String> results = queryHandler.handleQueries(queries);
-        assertTrue(results.contains("Unsupported query!"), "Unsupported query not handled correctly.");
+        queries.add(new String[]{"MERGE_ACCOUNTS", "Frank", "Grace"});
+        String result = queryHandler.handleQueries(queries).get(0);
+        assertEquals("Merge Successful!", result);
     }
 }

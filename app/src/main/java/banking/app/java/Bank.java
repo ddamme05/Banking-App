@@ -1,6 +1,5 @@
 package banking.app.java;
 
-
 import java.util.*;
 
 public class Bank {
@@ -35,7 +34,7 @@ public class Bank {
     public double withdraw(String accountId, double amount) {
         Account account = db.getAccount(accountId);
         if (account != null && account.withdraw(amount)) {
-            account.recordOutgoing(amount); // Add this line
+            account.recordOutgoing(amount);
             return account.getBalance();
         }
         return -1;
@@ -53,30 +52,26 @@ public class Bank {
         return -1;
     }
 
+    public double shopWithCashback(String accountId, String shop, double amount) {
+        Account account = db.getAccount(accountId);
+        if (account != null) {
+            return account.shopWithCashback(amount);
+        }
+        return -1;
+    }
+
+
+
 
     public List<Account> getTopSpenders(int n) {
-        //Creating list with all accounts in db
         List<Account> sortedAccounts = new ArrayList<>(db.getAllAccountObjects());
-        //Sorting accounts is total outgoing amt. unless they have same outgoing then we sort alphabetically
         sortedAccounts.sort((a, b) -> {
             if (a.getTotalOutgoing() == b.getTotalOutgoing()) {
                 return a.getAccountId().compareTo(b.getAccountId());
             }
-            //sorting by outgoing amt. desc
             return Double.compare(b.getTotalOutgoing(), a.getTotalOutgoing());
         });
-        //We get the n accounts ranked
         return sortedAccounts.subList(0, Math.min(n, sortedAccounts.size()));
-    }
-
-    public double addCashback(String accountId, double amount) {
-        Account account = db.getAccount(accountId);
-        if (account != null) {
-            double cashbackAmount = amount * 0.005; // 0.5% cashback
-            account.receiveCashback(cashbackAmount);
-            return account.getBalance();
-        }
-        return -1;
     }
 
     public boolean mergeAccounts(String sourceAccountId, String targetAccountId) {
@@ -84,20 +79,16 @@ public class Bank {
         Account targetAccount = db.getAccount(targetAccountId);
 
         if (sourceAccount == null || targetAccount == null) {
-            return false; // One or both accounts do not exist
+            return false;
         }
 
         double sourceBalance = sourceAccount.getBalance();
         targetAccount.deposit(sourceBalance);
         sourceAccount.withdraw(sourceBalance);
-
-        //Combine transaction history of both accounts
         targetAccount.mergeTransactions(sourceAccount.getTransactions());
-
         db.removeAccount(sourceAccountId);
         return true;
     }
-
 
     public double getBalance(String accountId) {
         Account account = db.getAccount(accountId);

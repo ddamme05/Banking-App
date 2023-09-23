@@ -43,4 +43,10 @@ public class MockDB {
         }
         return accountBalances;
     }
+    public void updateAccount(Account account) {
+        if (account != null && accountExists(account.getAccountId())) {
+            accounts.put(account.getAccountId(), account);
+        }
+    }
+
 }

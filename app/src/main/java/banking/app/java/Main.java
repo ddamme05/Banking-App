@@ -7,9 +7,14 @@ import java.util.Map;
 public class Main {
 
     public static void main(String[] args) {
-        executeCapitalOneFlow();
-        executeTDBankFlow();
+        try {
+            executeCapitalOneFlow();
+            executeTDBankFlow();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
 
     public static void executeCapitalOneFlow() {
         Bank capital_one = new Bank();
@@ -38,7 +43,8 @@ public class Main {
         queries.add(new String[]{"TRANSFER", "9", "account1", "account2", "2500"});
         queries.add(new String[]{"TOP_SPENDERS", "3"});
         queries.add(new String[]{"TRANSFER", "10", "account1", "account2", "500"});
-        queries.add(new String[]{"CASHBACK", "account1"});
+        queries.add(new String[]{"DEPOSIT", "4", "account1", "2000"});
+        queries.add(new String[]{"SHOP_CASHBACK", "account1", "Nike", "2000"});
         queries.add(new String[]{"MERGE_ACCOUNTS", "account1", "account2"});
 
         return handler.handleQueries(queries);
